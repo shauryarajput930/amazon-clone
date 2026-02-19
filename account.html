@@ -450,6 +450,236 @@
         grid-template-columns: 1fr;
       }
     }
+
+    @media (max-width: 576px) {
+      .navbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+      }
+      
+      .navbar .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 20px;
+      }
+      
+      .dashboard-header {
+        text-align: center;
+        padding: 20px 0;
+      }
+      
+      .dashboard-header h1 {
+        font-size: 24px;
+      }
+      
+      .dashboard-header p {
+        font-size: 14px;
+      }
+      
+      .account-tabs {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .account-tab {
+        width: 100%;
+        text-align: left;
+        padding: 15px;
+        border-radius: 0;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      .account-tab.active {
+        border-left: 4px solid #ff9900;
+        background-color: #f8f8f8;
+      }
+      
+      .content-card {
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      
+      .content-card h3 {
+        font-size: 18px;
+      }
+      
+      .content-card p {
+        font-size: 14px;
+      }
+      
+      .content-card ul {
+        font-size: 14px;
+      }
+      
+      .action-button {
+        width: 100%;
+        padding: 12px;
+        text-align: center;
+        margin-top: 10px;
+      }
+      
+      .feature-list {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .feature-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+      
+      .feature-icon {
+        margin-bottom: 15px;
+      }
+      
+      .quick-links {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .quick-link {
+        padding: 15px;
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .modal {
+        width: 95%;
+        margin: 10px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      
+      .auth-tabs {
+        flex-direction: column;
+      }
+      
+      .auth-tab {
+        width: 100%;
+        text-align: center;
+        padding: 15px;
+      }
+      
+      .modal-body {
+        padding: 15px;
+      }
+      
+      .form-group input,
+      .form-group select {
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard-header h1 {
+        font-size: 20px;
+      }
+      
+      .dashboard-header p {
+        font-size: 13px;
+      }
+      
+      .content-card {
+        padding: 12px;
+      }
+      
+      .content-card h3 {
+        font-size: 16px;
+      }
+      
+      .action-button {
+        font-size: 14px;
+        padding: 10px;
+      }
+      
+      .feature-item {
+        padding: 15px;
+      }
+      
+      .feature-text h4 {
+        font-size: 16px;
+      }
+      
+      .feature-text p {
+        font-size: 13px;
+      }
+      
+      .quick-link {
+        padding: 12px;
+      }
+      
+      .quick-link strong {
+        font-size: 14px;
+      }
+      
+      .quick-link small {
+        font-size: 11px;
+      }
+      
+      .modal {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+      }
+      
+      .modal-header {
+        padding: 15px;
+      }
+      
+      .modal-header h2 {
+        font-size: 18px;
+      }
+      
+      .modal-body {
+        padding: 15px;
+      }
+      
+      .btn-primary {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+      }
+    }
+
+    /* Landscape orientations */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .account-tabs {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      
+      .account-tab {
+        min-width: 120px;
+      }
+      
+      .dashboard-header {
+        padding: 15px 0;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .navbar,
+      .account-tabs,
+      .action-button,
+      .modal {
+        display: none;
+      }
+      
+      .account-dashboard {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+      
+      .content-card {
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+      }
+    }
   </style>
 </head>
 <body>
