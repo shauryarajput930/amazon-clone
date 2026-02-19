@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Account - Amazon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .account-dashboard {
+      max-width: 1200px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .dashboard-header {
+      background-color: #f7f8fa;
+      padding: 20px 30px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #0f1111;
+      font-weight: 400;
+    }
+
+    .dashboard-header p {
+      margin: 5px 0 0 0;
+      color: #565959;
+      font-size: 16px;
+    }
+
+    .account-tabs {
+      display: flex;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      overflow-x: auto;
+    }
+
+    .account-tab {
+      padding: 15px 25px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: #565959;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-tab i {
+      font-size: 16px;
+      color: #888;
+    }
+
+    .account-tab.active {
+      color: #0f1111;
+      border-bottom-color: #ff9900;
+      font-weight: 500;
+    }
+
+    .account-tab.active i {
+      color: #ff9900;
+    }
+
+    .account-tab:hover {
+      color: #0f1111;
+      background-color: #f7f8fa;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 30px;
+      min-height: 500px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .content-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .content-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(-2px);
+      border-color: #ff9900;
+    }
+
+    .content-card h3 {
+      margin: 0 0 15px 0;
+      color: #0f1111;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .content-card p {
+      color: #565959;
+      line-height: 1.5;
+      margin: 0 0 15px 0;
+    }
+
+    .content-card ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .content-card li {
+      margin: 8px 0;
+      color: #565959;
+      line-height: 1.4;
+    }
+
+    .action-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background-color: #ff9900;
+      color: #0f1111;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .action-button:hover {
+      background-color: #0f1111;
+      color: #ff9900;
+      transform: translateX(-3px);
+    }
+
+    .action-button i {
+      font-size: 14px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background-color: #e7f3e9;
+      color: #0f1111;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #e7e7e7;
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #ff9900;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .feature-text h4 {
+      margin: 0 0 5px 0;
+      color: #0f1111;
+      font-size: 16px;
+    }
+
+    .feature-text p {
+      margin: 0;
+      color: #565959;
+      font-size: 14px;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background-color: white;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #0f1111;
+      font-weight: 400;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-modal:hover {
+      color: #0f1111;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #ddd;
+      background-color: #f7f8fa;
+      text-align: center;
+    }
+
+    .modal-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #565959;
+    }
+
+    .modal-footer a {
+      color: #007185;
+      text-decoration: none;
+    }
+
+    .modal-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #565959;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab.active {
+      color: #0f1111;
+      border-bottom-color: #ff9900;
+      font-weight: 500;
+    }
+
+    .auth-content {
+      display: none;
+    }
+
+    .auth-content.active {
+      display: block;
+    }
+
+    .account-form {
+      display: block;
+      gap: 15px;
+      max-width: 350px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #0f1111;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="text"],
+    .form-group select {
+      padding: 8px 12px;
+      border: 1px solid #a6a6a6;
+      border-radius: 3px;
+      font-size: 14px;
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #c45500;
+      box-shadow: 0 0 3px rgba(194, 165, 0, 0.2);
+    }
+
+    .form-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    .form-group label:has(input[type="checkbox"]) {
+      display: flex;
+      align-items: center;
+      font-weight: normal;
+    }
+
+    .btn-primary {
+      background-color: #f0c14b;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 400;
+      transition: background-color 0.15s ease-in-out;
+      width: 100%;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary:hover {
+      background-color: #e47911;
+      border-color: #a52a1a;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f7f8fa;
+      border-top: 1px solid #ddd;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #0f1111;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .quick-link:hover {
+      background-color: #f7f8fa;
+      border-color: #c45500;
+      transform: none;
+    }
+
+    .quick-link i {
+      color: #ff9900;
+      font-size: 16px;
+    }
+
+    .quick-link:hover i {
+      color: #c45500;
+    }
+
+    @media (max-width: 768px) {
+      .account-tabs {
+        flex-wrap: wrap;
+      }
+      
+      .account-tab {
+        flex: 1 1 auto;
+        min-width: 150px;
+      }
+      
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Amazon</div>
+    <div class="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./account.html">Account</a>
+      <a href="./wishlist.html" class="wishlist-indicator">
+        <i class="fas fa-heart"></i>
+        <span id="wishlistCount">0</span>
+      </a>
+      <span class="cart-indicator" aria-label="Cart items">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="account-dashboard">
+    <div class="dashboard-header">
+      <h1>Your Account</h1>
+      <p>Manage your account, view orders, and access personalized recommendations</p>
+    </div>
+
+    <!-- Account Navigation Tabs -->
+    <div class="account-tabs">
+      <button class="account-tab active" onclick="switchTab('login-security')">
+        <i class="fas fa-user-shield"></i>
+        Login & Security
+      </button>
+      <button class="account-tab" onclick="switchTab('addresses')">
+        <i class="fas fa-map-marker-alt"></i>
+        Your Addresses
+      </button>
+      <button class="account-tab" onclick="switchTab('payment')">
+        <i class="fas fa-credit-card"></i>
+        Payment Options
+      </button>
+      <button class="account-tab" onclick="switchTab('amazon-pay')">
+        <i class="fab fa-amazon"></i>
+        Amazon Pay
+      </button>
+      <button class="account-tab" onclick="switchTab('memberships')">
+        <i class="fas fa-crown"></i>
+        Memberships & Subscriptions
+      </button>
+    </div>
+
+    <!-- Tab Content Container -->
+    <div class="tab-content active" id="login-security">
+      <div class="content-grid">
+        <div class="content-card">
+          <h3><i class="fas fa-user-circle"></i> Your Profile</h3>
+          <p>Manage your personal information, email, and password settings</p>
+          <button class="action-button" onclick="handleEditProfile()">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+          </button>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-shield-alt"></i> Login & Security</h3>
+          <p>Two-factor authentication, login history, and security settings</p>
+          <ul>
+            <li>Change password</li>
+            <li>Two-factor authentication</li>
+            <li>Login history</li>
+            <li>Security notifications</li>
+          </ul>
+          <a href="#" class="action-button">
+            <i class="fas fa-cog"></i>
+            Security Settings
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-bell"></i> Notifications</h3>
+          <p>Manage your communication preferences</p>
+          <ul>
+            <li>Email notifications</li>
+            <li>SMS alerts</li>
+            <li>Push notifications</li>
+            <li>Marketing preferences</li>
+          </ul>
+          <a href="#" class="action-button">
+            <i class="fas fa-sliders-h"></i>
+            Notification Settings
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="addresses">
+      <div class="content-grid">
+        <div class="content-card">
+          <h3><i class="fas fa-home"></i> Default Address</h3>
+          <p>John Doe<br>123 Main Street, Apt 4B<br>New Delhi, Delhi 110001<br>India</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-edit"></i>
+            Edit Address
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-plus-circle"></i> Add New Address</h3>
+          <p>Add a new delivery address for faster checkout</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-plus"></i>
+            Add Address
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-list"></i> Address Book</h3>
+          <p>View and manage all your saved addresses</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-address-book"></i>
+            View All Addresses
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="payment">
+      <div class="content-grid">
+        <div class="content-card">
+          <h3><i class="fas fa-credit-card"></i> Payment Methods</h3>
+          <p>Manage your saved payment methods and billing information</p>
+          <ul>
+            <li>Credit/Debit Cards</li>
+            <li>Net Banking</li>
+            <li>UPI</li>
+            <li>Gift Cards</li>
+          </ul>
+          <a href="#" class="action-button">
+            <i class="fas fa-plus"></i>
+            Add Payment Method
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-gift"></i> Gift Cards</h3>
+          <p>Redeem gift cards and check your balance</p>
+          <div class="status-badge">Balance: ₹2,500</div>
+          <a href="#" class="action-button">
+            <i class="fas fa-plus"></i>
+            Redeem Gift Card
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-wallet"></i> Your Payments</h3>
+          <p>View transaction history and payment settings</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-history"></i>
+            View Payment History
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="amazon-pay">
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fab fa-amazon-pay"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Amazon Pay Balance</h4>
+            <p>Current balance and transaction history</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-qrcode"></i>
+          </div>
+          <div class="feature-text">
+            <h4>QR Code</h4>
+            <p>Generate QR code for easy payments</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Mobile Recharge</h4>
+            <p>Recharge mobile and DTH services</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Quick Pay</h4>
+            <p>Pay bills and recharge instantly</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="memberships">
+      <div class="content-grid">
+        <div class="content-card">
+          <h3><i class="fas fa-crown" style="color: #ff9900;"></i> Amazon Prime</h3>
+          <p>Free fast delivery, Prime Video, Music, and more</p>
+          <div class="status-badge">Active</div>
+          <ul>
+            <li>Free 1-day delivery</li>
+            <li>Prime Video & Music</li>
+            <li>Prime Reading</li>
+            <li>Exclusive deals</li>
+          </ul>
+          <a href="#" class="action-button">
+            <i class="fas fa-cog"></i>
+            Manage Prime
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-book"></i> Kindle Unlimited</h3>
+          <p>Unlimited reading from over 1 million books</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-external-link-alt"></i>
+            Explore Kindle Unlimited
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-music"></i> Amazon Music</h3>
+          <p>70 million songs ad-free</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-play"></i>
+            Try Amazon Music
+          </a>
+        </div>
+        
+        <div class="content-card">
+          <h3><i class="fas fa-plus"></i> More Subscriptions</h3>
+          <p>Audible, Prime Gaming, and other services</p>
+          <a href="#" class="action-button">
+            <i class="fas fa-th"></i>
+            View All Services
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal -->
+    <div class="modal-overlay" id="authModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Sign In or Create Account</h2>
+          <button class="close-modal" onclick="closeAuthModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</button>
+            <button class="auth-tab" onclick="switchAuthTab('signup')">Create Account</button>
+          </div>
+          
+          <div class="auth-content active" id="signin-content">
+            <form class="account-form" onsubmit="handleSignIn(event)">
+              <div class="form-group">
+                <label for="signin-email">Email or mobile phone number</label>
+                <input type="email" id="signin-email" required placeholder="Enter your email or mobile number">
+              </div>
+              <div class="form-group">
+                <label for="signin-password">Password</label>
+                <input type="password" id="signin-password" required placeholder="Enter your password">
+              </div>
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="remember-me">
+                  Keep me signed in
+                </label>
+              </div>
+              <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+          </div>
+          
+          <div class="auth-content" id="signup-content">
+            <form class="account-form" onsubmit="handleSignup(event)">
+              <div class="form-group">
+                <label for="signup-name">Your name</label>
+                <input type="text" id="signup-name" required placeholder="Enter your name">
+              </div>
+              <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" required placeholder="Enter your email">
+              </div>
+              <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required placeholder="Enter your password (min 6 characters)">
+              </div>
+              <div class="form-group">
+                <label for="signup-confirm">Re-enter password</label>
+                <input type="password" id="signup-confirm" required placeholder="Enter your password again">
+              </div>
+              <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <p>By continuing, you agree to Amazon's Conditions of Use and Privacy Notice.</p>
+          <a href="#">Need help?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-links">
+      <a href="./order-history.html" class="quick-link">
+        <i class="fas fa-box"></i>
+        <div>
+          <strong>Your Orders</strong>
+          <small>Track, return, or buy things again</small>
+        </div>
+      </a>
+      <a href="./wishlist.html" class="quick-link">
+        <i class="fas fa-heart"></i>
+        <div>
+          <strong>Your Lists</strong>
+          <small>Wishlist, recommendations, and more</small>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabName) {
+      // Hide all tabs
+      const allTabs = document.querySelectorAll('.account-tab');
+      const allContents = document.querySelectorAll('.tab-content');
+      
+      allTabs.forEach(tab => tab.classList.remove('active'));
+      allContents.forEach(content => content.classList.remove('active'));
+      
+      // Show selected tab
+      const selectedTab = document.querySelector(`.account-tab[onclick="switchTab('${tabName}')"]`);
+      const selectedContent = document.getElementById(tabName);
+      
+      if (selectedTab) selectedTab.classList.add('active');
+      if (selectedContent) selectedContent.classList.add('active');
+    }
+
+    function openProfileTab() {
+      switchTab('login-security');
+      // Scroll to profile section
+      setTimeout(() => {
+        const profileCard = document.querySelector('#login-security .content-card');
+        if (profileCard) {
+          profileCard.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+
+    function openAuthModal() {
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('active');
+    }
+
+    function switchAuthTab(tab) {
+      const signinContent = document.getElementById('signin-content');
+      const signupContent = document.getElementById('signup-content');
+      const signinTab = document.querySelector('.auth-tab[onclick="switchAuthTab(\'signin\')"]');
+      const signupTab = document.querySelector('.auth-tab[onclick="switchAuthTab(\'signup\')"]');
+
+      if (tab === 'signin') {
+        signinContent.classList.add('active');
+        signupContent.classList.remove('active');
+        signinTab.classList.add('active');
+        signupTab.classList.remove('active');
+      } else {
+        signinContent.classList.remove('active');
+        signupContent.classList.add('active');
+        signinTab.classList.remove('active');
+        signupTab.classList.add('active');
+      }
+    }
+
+    function handleSignIn(event) {
+      event.preventDefault();
+      const form = event.target;
+      const email = document.getElementById('signin-email')?.value;
+      const password = document.getElementById('signin-password')?.value;
+      
+      // Simple validation
+      if (!email || !password) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      // Simulate login (no backend)
+      alert('Login successful! Welcome back to Amazon.');
+      form.reset();
+      closeAuthModal();
+      
+      // Redirect to home page after successful login
+      setTimeout(() => {
+        window.location.href = './index.html';
+      }, 1000);
+    }
+    
+    function handleSignup(event) {
+      event.preventDefault();
+      const form = event.target;
+      const name = document.getElementById('signup-name')?.value;
+      const email = document.getElementById('signup-email')?.value;
+      const password = document.getElementById('signup-password')?.value;
+      const confirmPassword = document.getElementById('signup-confirm')?.value;
+      
+      // Validation
+      if (!name || !email || !password || !confirmPassword) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      if (password.length < 6) {
+        alert('Password must be at least 6 characters long');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+      
+      // Email validation
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address');
+        return;
+      }
+      
+      // Simulate account creation (no backend)
+      alert('Account created successfully! You can now sign in.');
+      form.reset();
+      switchAuthTab('signin'); // Switch to sign in tab
+    }
+
+    // Close modal when clicking outside
+    document.addEventListener('click', function(event) {
+      const modal = document.getElementById('authModal');
+      if (modal && !modal.contains(event.target)) {
+        closeAuthModal();
+      }
+    });
+
+    // Open modal on page load
+    window.addEventListener('load', function() {
+      setTimeout(openAuthModal, 500);
+    });
+
+    // Initialize cart and wishlist counts
+    document.addEventListener('DOMContentLoaded', () => {
+      // Update cart count
+      const cart = JSON.parse(localStorage.getItem('amazon_cart_items') || '[]');
+      const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+      const cartElements = document.querySelectorAll('#cartCount');
+      cartElements.forEach(el => el.textContent = cartCount);
+
+      // Update wishlist count
+      const wishlist = JSON.parse(localStorage.getItem('amazon_wishlist_items') || '[]');
+      const wishlistElements = document.querySelectorAll('#wishlistCount');
+      wishlistElements.forEach(el => el.textContent = wishlist.length);
+    });
+  </script>
+  <script src="./java.js"></script>
+</body>
+</html>

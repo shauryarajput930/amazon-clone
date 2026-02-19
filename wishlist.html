@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .wishlist-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .wishlist-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .wishlist-header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #333;
+    }
+
+    .wishlist-header p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .wishlist-items {
+      margin-bottom: 20px;
+    }
+
+    .wishlist-item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding: 20px 0;
+      gap: 20px;
+    }
+
+    .wishlist-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .wishlist-item-details {
+      flex-grow: 1;
+    }
+
+    .wishlist-item-details h3 {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .wishlist-item-details p {
+      margin: 5px 0;
+      color: #555;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .wishlist-item-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .wishlist-item-actions button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: var(--dark-accent);
+      color: white;
+    }
+
+    .remove-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .remove-btn:hover {
+      background-color: #c82333;
+    }
+
+    .empty-wishlist {
+      text-align: center;
+      padding: 60px 20px;
+      color: #777;
+    }
+
+    .empty-wishlist i {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    .empty-wishlist h2 {
+      margin: 0 0 10px 0;
+      color: #555;
+    }
+
+    .continue-shopping {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .continue-shopping:hover {
+      background-color: var(--dark-accent);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Amazon</div>
+    <div class="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./account.html">Account</a>
+      <a href="./wishlist.html" class="wishlist-indicator">
+        <i class="fas fa-heart"></i>
+        <span id="wishlistCount">0</span>
+      </a>
+      <span class="cart-indicator" aria-label="Cart items">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="wishlist-container">
+    <div class="wishlist-header">
+      <h1>My Wishlist</h1>
+      <p>Items you've saved for later</p>
+    </div>
+
+    <div class="wishlist-items" id="wishlist-items">
+      <!-- Wishlist items will be dynamically inserted here -->
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="./index.html" class="continue-shopping">
+        <i class="fas fa-arrow-left"></i> Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <script src="./java.js"></script>
+  <script>
+    // Wishlist Display Manager
+    class WishlistDisplay {
+      constructor() {
+        this.wishlistManager = new WishlistManager();
+        this.wishlistItems = document.getElementById('wishlist-items');
+        this.displayWishlist();
+      }
+
+      displayWishlist() {
+        const wishlist = this.wishlistManager.getWishlistItems();
+        
+        // Clear wishlist display
+        this.wishlistItems.innerHTML = '';
+
+        if (wishlist.length === 0) {
+          this.wishlistItems.innerHTML = `
+            <div class="empty-wishlist">
+              <i class="fas fa-heart"></i>
+              <h2>Your wishlist is empty</h2>
+              <p>Save items you love to your wishlist for later!</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Add each item to wishlist display
+        wishlist.forEach(item => {
+          const itemElement = document.createElement('div');
+          itemElement.classList.add('wishlist-item');
+          itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="wishlist-item-details">
+              <h3>${item.name}</h3>
+              <p>₹${item.price.toFixed(2)}</p>
+              <div class="wishlist-item-actions">
+                <button class="add-to-cart-btn" onclick="wishlistDisplay.moveToCart(${item.id})">
+                  <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                <button class="remove-btn" onclick="wishlistDisplay.removeFromWishlist(${item.id})">
+                  <i class="fas fa-trash"></i> Remove
+                </button>
+              </div>
+            </div>
+          `;
+          this.wishlistItems.appendChild(itemElement);
+        });
+      }
+
+      moveToCart(productId) {
+        // Find the item in wishlist
+        const wishlist = this.wishlistManager.getWishlistItems();
+        const item = wishlist.find(item => item.id === productId);
+        
+        if (item) {
+          // Add to cart using CartManager
+          const cartManager = new CartManager();
+          cartManager.cart.push({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            quantity: 1
+          });
+          cartManager.saveCart();
+          cartManager.updateCartCount();
+          
+          // Remove from wishlist
+          this.wishlistManager.removeFromWishlist(productId);
+          this.displayWishlist();
+          
+          // Show success message
+          alert(`${item.name} has been moved to your cart!`);
+        }
+      }
+
+      removeFromWishlist(productId) {
+        if (confirm('Are you sure you want to remove this item from your wishlist?')) {
+          this.wishlistManager.removeFromWishlist(productId);
+          this.displayWishlist();
+        }
+      }
+    }
+
+    // Initialize wishlist display when DOM is ready
+    let wishlistDisplay;
+    document.addEventListener('DOMContentLoaded', () => {
+      wishlistDisplay = new WishlistDisplay();
+    });
+  </script>
+</body>
+</html>

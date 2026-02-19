@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+ 
+<body>
+  <div class="navbar">
+    <div class="logo">Amazon</div>
+
+    <div class="search-bar">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for products...">
+        <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+        <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="./account.html">Account</a>
+      <a href="./wishlist.html" class="wishlist-indicator">
+        <i class="fas fa-heart"></i>
+        <span id="wishlistCount">0</span>
+      </a>
+      <span class="cart-indicator" aria-label="Cart items">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-carousel" aria-hidden="true">
+      <span class="hero-slide slide-1"></span>
+      <span class="hero-slide slide-2"></span>
+      <span class="hero-slide slide-3"></span>
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <h1>Welcome to Amazon</h1>
+  </div>
+
+  <!-- Categories Section -->
+  <div class="categories-section">
+    <h2>Shop by Category</h2>
+    <div class="categories">
+      <button class="category-btn active" data-category="all">All Products</button>
+      <button class="category-btn" data-category="electronics">Electronics</button>
+      <button class="category-btn" data-category="accessories">Accessories</button>
+      <button class="category-btn" data-category="audio">Audio</button>
+      <button class="category-btn" data-category="computers">Computers</button>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <h3>Filter Products</h3>
+    <div class="filters">
+      <div class="filter-group">
+        <label>Price Range:</label>
+        <select id="price-filter">
+          <option value="all">All Prices</option>
+          <option value="0-25">Under ₹25</option>
+          <option value="25-35">₹25 - ₹35</option>
+          <option value="35-50">₹35 - ₹50</option>
+          <option value="50+">Above ₹50</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Rating:</label>
+        <select id="rating-filter">
+          <option value="all">All Ratings</option>
+          <option value="4.5+">4.5+ Stars</option>
+          <option value="4+">4+ Stars</option>
+          <option value="3+">3+ Stars</option>
+        </select>
+      </div>
+      <button class="clear-filters-btn">Clear Filters</button>
+    </div>
+  </div>
+
+  <div class="products">
+    <div class="product-card" data-product-id="1" data-product-name="IQOO Neo 10R" data-price="19.99" data-rating="4.5" data-category="electronics">
+      <img src="./assets/phone.jpg" alt="IQOO Neo 10R">
+      <h3>IQOO Neo 10R</h3>
+      <p>₹19.99</p>
+      <span class="rating">⭐ 4.5/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="2" data-product-name="Gaming Laptop" data-price="29.99" data-rating="4.8" data-category="computers">
+      <img src="./assets/laptop.jfif" alt="Gaming Laptop">
+      <h3>Gaming Laptop</h3>
+      <p>₹29.99</p>
+      <span class="rating">⭐ 4.8/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="3" data-product-name="Wireless Airpods" data-price="39.99" data-rating="4.6" data-category="audio">
+      <img src="./assets/airdropes.jpg" alt="Wireless Airpods">
+      <h3>Wireless Airpods</h3>
+      <p>₹39.99</p>
+      <span class="rating">⭐ 4.6/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="4" data-product-name="4K Camera" data-price="49.99" data-rating="4.7">
+      <img src="./assets/camera.jpg" alt="4K Camera">
+      <h3>4K Camera</h3>
+      <p>₹49.99</p>
+      <span class="rating">⭐ 4.7/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="5" data-product-name="Bluetooth Speaker" data-price="39.99" data-rating="4.4">
+      <img src="./assets/sound.jpg" alt="Bluetooth Speaker">
+      <h3>Bluetooth Speaker</h3>
+      <p>₹39.99</p>
+      <span class="rating">⭐ 4.4/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="6" data-product-name="Smartwatch Pro" data-price="39.99" data-rating="4.5">
+      <img src="./assets/watch.jpg" alt="Smartwatch Pro">
+      <h3>Smartwatch Pro</h3>
+      <p>₹39.99</p>
+      <span class="rating">⭐ 4.5/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="7" data-product-name="Tablet Max" data-price="44.99" data-rating="4.7">
+      <img src="./assets/laptop.jfif" alt="Tablet Max">
+      <h3>Tablet Max</h3>
+      <p>₹44.99</p>
+      <span class="rating">⭐ 4.7/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="8" data-product-name="USB-C Hub" data-price="24.99" data-rating="4.3">
+      <img src="./assets/phone.jpg" alt="USB-C Hub">
+      <h3>USB-C Hub</h3>
+      <p>₹24.99</p>
+      <span class="rating">⭐ 4.3/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="9" data-product-name="Mechanical Keyboard" data-price="34.99" data-rating="4.6">
+      <img src="./assets/laptop.jfif" alt="Mechanical Keyboard">
+      <h3>Mechanical Keyboard</h3>
+      <p>₹34.99</p>
+      <span class="rating">⭐ 4.6/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="10" data-product-name="Wireless Mouse" data-price="19.99" data-rating="4.2">
+      <img src="./assets/phone.jpg" alt="Wireless Mouse">
+      <h3>Wireless Mouse</h3>
+      <p>₹19.99</p>
+      <span class="rating">⭐ 4.2/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="11" data-product-name="Webcam HD" data-price="29.99" data-rating="4.5">
+      <img src="./assets/camera.jpg" alt="Webcam HD">
+      <h3>Webcam HD</h3>
+      <p>₹29.99</p>
+      <span class="rating">⭐ 4.5/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+
+    <div class="product-card" data-product-id="12" data-product-name="Phone Stand" data-price="14.99" data-rating="4.1">
+      <img src="./assets/phone.jpg" alt="Phone Stand">
+      <h3>Phone Stand</h3>
+      <p>₹14.99</p>
+      <span class="rating">⭐ 4.1/5</span>
+      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-wishlist">Add to Wishlist</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="./about.html">About Us</a>
+    <a href="./contact.html">Contact Us</a>
+    <a href="./policy.html">Privacy Policy</a>
+    <a href="./service.html">Terms of Service</a>
+  </div>
+
+   <script src="./java.js"></script>
+</body>
+</html>

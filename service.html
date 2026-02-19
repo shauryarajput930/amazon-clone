@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service - Amazon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .service-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .service-header h1 {
+      font-size: 36px;
+      color: var(--primary-color);
+      margin: 0 0 20px 0;
+    }
+
+    .service-header p {
+      font-size: 18px;
+      color: #666;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .service-content {
+      line-height: 1.8;
+      color: #333;
+    }
+
+    .service-section {
+      margin-bottom: 40px;
+      padding: 30px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .service-section h2 {
+      color: var(--primary-color);
+      margin: 0 0 20px 0;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .service-section h2 i {
+      color: var(--accent-color);
+      font-size: 20px;
+    }
+
+    .service-section p {
+      margin: 0 0 15px 0;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .service-section ul {
+      margin: 15px 0;
+      padding-left: 20px;
+    }
+
+    .service-section li {
+      margin: 10px 0;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .last-updated {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Amazon</div>
+    <div class="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./account.html">Account</a>
+      <a href="./wishlist.html" class="wishlist-indicator">
+        <i class="fas fa-heart"></i>
+        <span id="wishlistCount">0</span>
+      </a>
+      <span class="cart-indicator" aria-label="Cart items">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="service-container">
+    <div class="service-header">
+      <h1>Terms of Service</h1>
+      <p>By using Amazon, you agree to the following terms and conditions.</p>
+    </div>
+
+    <div class="service-content">
+      <div class="service-section">
+        <h2><i class="fas fa-shopping-cart"></i> Use of Service</h2>
+        <p>Your use of Amazon's services is subject to the following conditions:</p>
+        <ul>
+          <li>You must be at least 18 years old to create an account</li>
+          <li>You are responsible for maintaining the confidentiality of your account credentials</li>
+          <li>You agree to provide accurate, current, and complete information for all transactions</li>
+          <li>You are responsible for all activities that occur under your account</li>
+          <li>You may not use our services for any illegal or unauthorized purpose</li>
+          <li>You must not interfere with or disrupt the service or servers</li>
+        </ul>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-box"></i> Products and Orders</h2>
+        <p>Terms related to products and orders:</p>
+        <ul>
+          <li>We strive to display accurate product information</li>
+          <li>Prices are subject to change without notice</li>
+          <li>We reserve the right to limit quantities purchased</li>
+          <li>Order acceptance is subject to product availability</li>
+          <li>Payment must be received before order processing</li>
+          <li>Risk of loss passes to buyer upon delivery</li>
+          <li>Returns are subject to our return policy</li>
+        </ul>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-credit-card"></i> Payment and Billing</h2>
+        <p>Payment and billing terms:</p>
+        <ul>
+          <li>You agree to provide current, complete, and accurate payment information</li>
+          <li>You authorize us to charge your chosen payment method</li>
+          <li>You agree to pay all amounts incurred through your account</li>
+          <li>We may require pre-authorization for certain payment methods</li>
+          <li>You are responsible for any applicable taxes</li>
+          <li>Refunds will be issued to original payment method</li>
+        </ul>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-shield-alt"></i> Intellectual Property</h2>
+        <p>Intellectual property rights:</p>
+        <ul>
+          <li>All content on Amazon is protected by copyright, trademark, and other intellectual property laws</li>
+          <li>You may not use our content for commercial purposes without permission</li>
+          <li>You may not reproduce, distribute, or create derivative works</li>
+          <li>Amazon and third-party trademarks may not be used without permission</li>
+          <li>You retain ownership of any content you submit to us</li>
+        </ul>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-ban"></i> Prohibited Activities</h2>
+        <p>The following activities are strictly prohibited:</p>
+        <ul>
+          <li>Using the service for fraudulent purposes</li>
+          <li>Violating any applicable laws or regulations</li>
+          <li>Infringing on intellectual property rights</li>
+          <li>Transmitting harmful or malicious code</li>
+          <li>Interfering with or disrupting other users</li>
+          <li>Attempting to gain unauthorized access to our systems</li>
+          <li>Spamming or sending unsolicited communications</li>
+        </ul>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-user-times"></i> Account Termination</h2>
+        <p>We may terminate or suspend your account:</p>
+        <ul>
+          <li>For violation of these terms</li>
+          <li>For violation of applicable laws</li>
+          <li>At our sole discretion, with or without notice</li>
+          <li>For extended periods of inactivity</li>
+          <li>For fraudulent or illegal activities</li>
+        </ul>
+        <p>Upon termination, your right to use the service ceases immediately.</p>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-gavel"></i> Dispute Resolution</h2>
+        <p>Any disputes will be resolved as follows:</p>
+        <ul>
+          <li>We will attempt to resolve disputes informally</li>
+          <li>Formal disputes will be handled through binding arbitration</li>
+          <li>Class action waivers are included in these terms</li>
+          <li>Disputes must be filed within one year of the incident</li>
+          <li>Governing law will be the jurisdiction of your residence</li>
+        </ul>
+      </div>
+
+      <div class="service-section">
+        <h2><i class="fas fa-edit"></i> Changes to Terms</h2>
+        <p>We reserve the right to modify these terms:</p>
+        <ul>
+          <li>At any time without prior notice</li>
+          <li>Changes will be effective immediately upon posting</li>
+          <li>Your continued use constitutes acceptance of changes</li>
+          <li>Material changes will be highlighted on our website</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="last-updated">
+      <strong>Last Updated:</strong> January 18, 2025
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="./about.html">About Us</a>
+    <a href="./contact.html">Contact Us</a>
+    <a href="./policy.html">Privacy Policy</a>
+    <a href="./service.html">Terms of Service</a>
+  </div>
+
+  <script src="./java.js"></script>
+</body>
+</html>

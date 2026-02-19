@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History - Amazon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .order-history-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-history-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .order-history-header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #333;
+    }
+
+    .order-history-header p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .order-filters {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .filter-group label {
+      font-weight: bold;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: white;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    .clear-filters-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      height: fit-content;
+    }
+
+    .clear-filters-btn:hover {
+      background-color: #c82333;
+    }
+
+    .orders-list {
+      margin-bottom: 20px;
+    }
+
+    .order-item {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .order-header {
+      background-color: #f8f9fa;
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-number {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .order-date {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .order-status {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-delivered {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-processing {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .status-shipped {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .order-items {
+      padding: 20px;
+    }
+
+    .order-product {
+      display: flex;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .order-product:last-child {
+      border-bottom: none;
+    }
+
+    .order-product img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-right: 15px;
+    }
+
+    .order-product-details {
+      flex-grow: 1;
+    }
+
+    .order-product-details h4 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .order-product-details p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .order-product-price {
+      font-weight: bold;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .order-summary {
+      background-color: #f8f9fa;
+      padding: 15px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-total {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .order-actions button {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      background-color: white;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .order-actions button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .empty-orders {
+      text-align: center;
+      padding: 60px 20px;
+      color: #777;
+    }
+
+    .empty-orders i {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    .empty-orders h2 {
+      margin: 0 0 10px 0;
+      color: #555;
+    }
+
+    .continue-shopping {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .continue-shopping:hover {
+      background-color: var(--dark-accent);
+      color: white;
+      transform: translateX(-3px);
+      border-color: var(--dark-accent);
+    }
+
+    .continue-shopping i {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Amazon</div>
+    <div class="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./account.html">Account</a>
+      <a href="./wishlist.html" class="wishlist-indicator">
+        <i class="fas fa-heart"></i>
+        <span id="wishlistCount">0</span>
+      </a>
+      <span class="cart-indicator" aria-label="Cart items">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="order-history-container">
+    <div class="order-history-header">
+      <h1>Order History</h1>
+      <p>Track and view your past orders</p>
+    </div>
+
+    <!-- Order Filters -->
+    <div class="order-filters">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Date Range:</label>
+          <select id="date-filter">
+            <option value="all">All Time</option>
+            <option value="last30">Last 30 Days</option>
+            <option value="last90">Last 90 Days</option>
+            <option value="last6months">Last 6 Months</option>
+            <option value="lastyear">Last Year</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Order Status:</label>
+          <select id="status-filter">
+            <option value="all">All Orders</option>
+            <option value="delivered">Delivered</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Price Range:</label>
+          <select id="price-filter">
+            <option value="all">All Prices</option>
+            <option value="0-500">Under ₹500</option>
+            <option value="500-1000">₹500 - ₹1000</option>
+            <option value="1000-2000">₹1000 - ₹2000</option>
+            <option value="2000+">Above ₹2000</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Search Orders:</label>
+          <input type="text" id="search-orders" placeholder="Order # or product name">
+        </div>
+        <button class="clear-filters-btn" onclick="clearFilters()">Clear Filters</button>
+      </div>
+    </div>
+
+    <div class="orders-list" id="orders-list">
+      <!-- Orders will be dynamically inserted here -->
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="./index.html" class="continue-shopping">
+        <i class="fas fa-arrow-left"></i> Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <script src="./java.js"></script>
+  <script>
+    // Order History Manager
+    class OrderHistoryManager {
+      constructor() {
+        this.ordersList = document.getElementById('orders-list');
+        this.orders = this.loadOrders();
+        this.filteredOrders = [...this.orders];
+        this.initializeEventListeners();
+        this.displayOrders();
+      }
+
+      loadOrders() {
+        // Generate some sample orders for demonstration
+        const mockOrders = [
+          {
+            id: 'ORD-001',
+            date: '2024-01-15',
+            status: 'delivered',
+            total: 89.97,
+            items: [
+              { name: 'IQOO Neo 10R', price: 19.99, quantity: 1, image: './assets/phone.jpg' },
+              { name: 'Gaming Laptop', price: 29.99, quantity: 1, image: './assets/laptop.jfif' },
+              { name: 'Wireless Airpods', price: 39.99, quantity: 1, image: './assets/airdropes.jpg' }
+            ]
+          },
+          {
+            id: 'ORD-002',
+            date: '2024-01-20',
+            status: 'shipped',
+            total: 49.99,
+            items: [
+              { name: '4K Camera', price: 49.99, quantity: 1, image: './assets/camera.jpg' }
+            ]
+          },
+          {
+            id: 'ORD-003',
+            date: '2024-01-25',
+            status: 'processing',
+            total: 79.98,
+            items: [
+              { name: 'Bluetooth Speaker', price: 39.99, quantity: 2, image: './assets/sound.jpg' }
+            ]
+          },
+          {
+            id: 'ORD-004',
+            date: '2023-12-10',
+            status: 'delivered',
+            total: 129.97,
+            items: [
+              { name: 'Smartwatch Pro', price: 39.99, quantity: 1, image: './assets/watch.jpg' },
+              { name: 'Tablet Max', price: 44.99, quantity: 1, image: './assets/laptop.jfif' },
+              { name: 'USB-C Hub', price: 24.99, quantity: 2, image: './assets/phone.jpg' }
+            ]
+          }
+        ];
+
+        // Save to localStorage if not exists
+        if (!localStorage.getItem('amazon_order_history')) {
+          localStorage.setItem('amazon_order_history', JSON.stringify(mockOrders));
+        }
+
+        return JSON.parse(localStorage.getItem('amazon_order_history')) || mockOrders;
+      }
+
+      initializeEventListeners() {
+        // Add event listeners for filters
+        document.getElementById('date-filter').addEventListener('change', () => this.applyFilters());
+        document.getElementById('status-filter').addEventListener('change', () => this.applyFilters());
+        document.getElementById('price-filter').addEventListener('change', () => this.applyFilters());
+        document.getElementById('search-orders').addEventListener('input', () => this.applyFilters());
+      }
+
+      applyFilters() {
+        const dateFilter = document.getElementById('date-filter').value;
+        const statusFilter = document.getElementById('status-filter').value;
+        const priceFilter = document.getElementById('price-filter').value;
+        const searchTerm = document.getElementById('search-orders').value.toLowerCase();
+
+        this.filteredOrders = this.orders.filter(order => {
+          // Date filter
+          if (dateFilter !== 'all') {
+            const orderDate = new Date(order.date);
+            const now = new Date();
+            const daysDiff = Math.floor((now - orderDate) / (1000 * 60 * 60 * 24));
+            
+            switch(dateFilter) {
+              case 'last30': if (daysDiff > 30) return false; break;
+              case 'last90': if (daysDiff > 90) return false; break;
+              case 'last6months': if (daysDiff > 180) return false; break;
+              case 'lastyear': if (daysDiff > 365) return false; break;
+            }
+          }
+
+          // Status filter
+          if (statusFilter !== 'all' && order.status !== statusFilter) {
+            return false;
+          }
+
+          // Price filter
+          if (priceFilter !== 'all') {
+            switch(priceFilter) {
+              case '0-500': if (order.total >= 500) return false; break;
+              case '500-1000': if (order.total < 500 || order.total >= 1000) return false; break;
+              case '1000-2000': if (order.total < 1000 || order.total >= 2000) return false; break;
+              case '2000+': if (order.total < 2000) return false; break;
+            }
+          }
+
+          // Search filter
+          if (searchTerm && !order.id.toLowerCase().includes(searchTerm) && 
+              !order.items.some(item => item.name.toLowerCase().includes(searchTerm))) {
+            return false;
+          }
+
+          return true;
+        });
+
+        this.displayOrders();
+      }
+
+      clearFilters() {
+        document.getElementById('date-filter').value = 'all';
+        document.getElementById('status-filter').value = 'all';
+        document.getElementById('price-filter').value = 'all';
+        document.getElementById('search-orders').value = '';
+        this.filteredOrders = [...this.orders];
+        this.displayOrders();
+      }
+
+        displayOrders() {
+        const orders = this.filteredOrders;
+        
+        // Clear orders display
+        this.ordersList.innerHTML = '';
+
+        if (orders.length === 0) {
+          this.ordersList.innerHTML = `
+            <div class="empty-orders">
+              <i class="fas fa-box"></i>
+              <h2>No orders found</h2>
+              <p>Try adjusting your filters or start shopping to see your order history here!</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Display each order
+        orders.forEach(order => {
+          const orderElement = document.createElement('div');
+          orderElement.classList.add('order-item');
+          orderElement.innerHTML = `
+            <div class="order-header">
+              <div>
+                <div class="order-number">Order #${order.id}</div>
+                <div class="order-date">${new Date(order.date).toLocaleDateString()}</div>
+              </div>
+              <div class="order-status status-${order.status}">${order.status}</div>
+            </div>
+            <div class="order-items">
+              ${order.items.map(item => `
+                <div class="order-product">
+                  <img src="${item.image}" alt="${item.name}">
+                  <div class="order-product-details">
+                    <h4>${item.name}</h4>
+                    <p>Quantity: ${item.quantity}</p>
+                  </div>
+                  <div class="order-product-price">₹${item.price.toFixed(2)}</div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="order-summary">
+              <div class="order-total">Total: ₹${order.total.toFixed(2)}</div>
+              <div class="order-actions">
+                <button onclick="orderHistoryManager.downloadInvoice('${order.id}')">
+                  <i class="fas fa-download"></i> Invoice
+                </button>
+                <button onclick="orderHistoryManager.viewOrderDetails('${order.id}')">
+                  <i class="fas fa-eye"></i> View Details
+                </button>
+                <button onclick="orderHistoryManager.trackOrder('${order.id}')">
+                  <i class="fas fa-truck"></i> Track Order
+                </button>
+                <button onclick="orderHistoryManager.reorder('${order.id}')">
+                  <i class="fas fa-redo"></i> Reorder
+                </button>
+                <button onclick="orderHistoryManager.initiateReturn('${order.id}')" ${order.status !== 'delivered' ? 'disabled' : ''}>
+                  <i class="fas fa-undo"></i> Return
+                </button>
+              </div>
+            </div>
+          `;
+          this.ordersList.appendChild(orderElement);
+        });
+      }
+
+      downloadInvoice(orderId) {
+        const order = this.orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        // Create invoice content
+        const invoiceContent = `
+          AMAZON INVOICE
+          =================
+          
+          Order ID: ${order.id}
+          Date: ${new Date(order.date).toLocaleDateString()}
+          Status: ${order.status}
+          
+          Items:
+          ${order.items.map(item => 
+            `- ${item.name} x ${item.quantity}: ₹${item.price.toFixed(2)}`
+          ).join('\n')}
+          
+          Total: ₹${order.total.toFixed(2)}
+          
+          Thank you for shopping with Amazon!
+        `;
+
+        // Create and download file
+        const blob = new Blob([invoiceContent], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `invoice-${orderId}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        
+        alert(`Invoice for ${orderId} downloaded successfully!`);
+      }
+
+      viewOrderDetails(orderId) {
+        const order = this.orders.find(o => o.id === orderId);
+        if (!order) return;
+        
+        const details = `
+          Order Details for ${orderId}
+          ==========================
+          
+          Date: ${new Date(order.date).toLocaleDateString()}
+          Status: ${order.status}
+          Total: ₹${order.total.toFixed(2)}
+          
+          Items:
+          ${order.items.map(item => 
+            `${item.name} - ₹${item.price.toFixed(2)} x ${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}`
+          ).join('\n')}
+        `;
+        
+        alert(details);
+      }
+
+      trackOrder(orderId) {
+        const order = this.orders.find(o => o.id === orderId);
+        if (!order) return;
+        
+        const trackingInfo = `
+          Tracking Order ${orderId}
+          ========================
+          
+          Current Status: ${order.status}
+          Estimated Delivery: ${new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+          
+          Tracking Number: TRK${Math.random().toString(36).substr(2, 9).toUpperCase()}
+        `;
+        
+        alert(trackingInfo);
+      }
+
+      reorder(orderId) {
+        const order = this.orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        // Add items to cart
+        const cartManager = new CartManager();
+        order.items.forEach(item => {
+          cartManager.addToCart({
+            id: Date.now() + Math.random(),
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            quantity: item.quantity
+          });
+        });
+
+        alert(`All items from ${orderId} have been added to your cart!`);
+        window.location.href = './order.html';
+      }
+
+      initiateReturn(orderId) {
+        const order = this.orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        if (order.status !== 'delivered') {
+          alert('Returns are only available for delivered orders.');
+          return;
+        }
+
+        const returnReason = prompt('Please specify the reason for return:');
+        if (!returnReason) return;
+
+        alert(`Return request for ${orderId} has been submitted.\nReason: ${returnReason}\n\nYou will receive an email with return instructions.`);
+      }
+
+    // Clear filters function
+    function clearFilters() {
+      orderHistoryManager.clearFilters();
+    }
+
+    // Initialize order history when DOM is ready
+    let orderHistoryManager;
+    document.addEventListener('DOMContentLoaded', () => {
+      orderHistoryManager = new OrderHistoryManager();
+    });
+  </script>
+</body>
+</html>

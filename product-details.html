@@ -1,0 +1,938 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #232f3e;
+      --accent-color: #febd69;
+      --dark-accent: #ff9900;
+      --bg-color: #f3f3f3;
+      --text-color: #333;
+      --border-color: #ddd;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .navbar .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar .back-link:hover {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      transform: translateX(-3px);
+      border-color: var(--accent-color);
+    }
+
+    .navbar .back-link i {
+      font-size: 14px;
+    }
+
+    .navbar .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: var(--accent-color);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 16px;
+    }
+
+    .cart-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .cart-indicator i {
+      color: var(--accent-color);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .product-image {
+      text-align: center;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-info h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .product-rating .stars {
+      color: #ff9900;
+      font-size: 20px;
+    }
+
+    .product-rating .reviews-count {
+      color: #0066c0;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .product-price {
+      font-size: 28px;
+      color: var(--dark-accent);
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .product-description {
+      color: #555;
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .product-actions button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-cart {
+      background-color: var(--accent-color);
+      color: #333;
+      flex: 1;
+    }
+
+    .btn-cart:hover {
+      background-color: var(--dark-accent);
+    }
+
+    .btn-wishlist {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid var(--border-color);
+      flex: 1;
+    }
+
+    .btn-wishlist:hover {
+      background-color: #e0e0e0;
+    }
+
+    .specifications {
+      margin: 30px 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .specifications h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 10px;
+    }
+
+    .spec-list {
+      list-style: none;
+    }
+
+    .spec-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .spec-list li:last-child {
+      border-bottom: none;
+    }
+
+    .spec-list i {
+      color: var(--dark-accent);
+      margin-right: 10px;
+      width: 20px;
+    }
+
+    .reviews-section {
+      margin: 30px 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .reviews-section h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 10px;
+    }
+
+    .review-item {
+      background-color: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .review-author {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .review-rating {
+      color: #ff9900;
+    }
+
+    .review-text {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .no-reviews {
+      color: #999;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .review-form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+    }
+
+    .review-form h3 {
+      margin: 0 0 20px 0;
+      color: var(--primary-color);
+      font-size: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .star-rating {
+      display: flex;
+      gap: 5px;
+      font-size: 24px;
+    }
+
+    .star-rating .star {
+      cursor: pointer;
+      color: #ddd;
+      transition: color 0.2s ease;
+    }
+
+    .star-rating .star:hover,
+    .star-rating .star.active {
+      color: #ff9900;
+    }
+
+    .image-upload {
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .image-upload:hover {
+      border-color: var(--accent-color);
+    }
+
+    .image-upload.dragover {
+      border-color: var(--accent-color);
+      background-color: #f8f9fa;
+    }
+
+    .image-preview {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .image-preview-item {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+
+    .image-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-preview-item .remove-image {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #dc3545;
+    }
+
+    .submit-review-btn {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-review-btn:hover {
+      background-color: var(--dark-accent);
+      color: white;
+    }
+
+    .submit-review-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .product-header {
+        grid-template-columns: 1fr;
+      }
+
+      .product-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      Back to Shopping
+    </a>
+    <div class="nav-right">
+      <span>Product Details</span>
+      <span class="cart-indicator" aria-label="Cart items">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="product-header">
+      <div class="product-image">
+        <img id="productImage" src="" alt="Product Image">
+      </div>
+
+      <div class="product-info">
+        <h1 id="productName"></h1>
+        
+        <div class="product-rating">
+          <span class="stars" id="productStars"></span>
+          <span id="productRating"></span>
+          <span class="reviews-count" onclick="document.getElementById('reviewsSection').scrollIntoView({behavior: 'smooth'})">
+            <span id="reviewCount">0</span> Reviews
+          </span>
+        </div>
+
+        <div class="product-price" id="productPrice"></div>
+
+        <p class="product-description" id="productDescription"></p>
+
+        <div class="product-actions">
+          <button class="btn-cart" onclick="addToCart()">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+          <button class="btn-wishlist" onclick="addToWishlist()">
+            <i class="fas fa-heart"></i> Add to Wishlist
+          </button>
+        </div>
+
+        <div style="background-color: #e8f5e9; padding: 15px; border-radius: 4px; margin-top: 15px;">
+          <p style="margin: 0; color: #2e7d32;"><strong>✓ Free Shipping</strong> on orders over ₹50</p>
+          <p style="margin: 5px 0 0 0; color: #2e7d32;"><strong>✓ 30-Day</strong> Money Back Guarantee</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="specifications">
+      <h2>Specifications</h2>
+      <ul class="spec-list" id="specsList"></ul>
+    </div>
+
+    <div class="reviews-section" id="reviewsSection">
+      <h2>Customer Reviews</h2>
+      <div id="reviewsList"></div>
+    </div>
+
+    <!-- Review Form -->
+    <div class="review-form">
+      <h3>Write Your Review</h3>
+      <form id="reviewForm" onsubmit="submitReview(event)">
+        <div class="form-group">
+          <label for="reviewName">Your Name:</label>
+          <input type="text" id="reviewName" required placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+          <label>Rating:</label>
+          <div class="star-rating" id="starRating">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reviewText">Your Review:</label>
+          <textarea id="reviewText" required placeholder="Share your experience with this product..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Images (Optional):</label>
+          <div class="image-upload" id="imageUpload">
+            <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #ddd; margin-bottom: 10px;"></i>
+            <p>Click to upload or drag and drop images here</p>
+            <p style="font-size: 12px; color: #999;">Maximum 5 images, up to 5MB each</p>
+            <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+          </div>
+          <div class="image-preview" id="imagePreview"></div>
+        </div>
+
+        <button type="submit" class="submit-review-btn" id="submitReviewBtn">
+          <i class="fas fa-paper-plane"></i> Submit Review
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 Amazon Clone. All Rights Reserved.</p>
+  </div>
+
+  <script>
+    // Product Database
+    const productDatabase = {
+      1: { id: 1, name: 'IQOO Neo 10R', price: 19.99, image: './assets/phone.jpg', rating: 4.5, description: 'Latest flagship smartphone with 5G connectivity and AI camera. Experience stunning performance and photography capabilities with this cutting-edge device.', specs: ['Snapdragon 8 Gen 2', '12GB RAM', '256GB Storage', 'AMOLED Display', '120Hz Refresh Rate'] },
+      2: { id: 2, name: 'Gaming Laptop', price: 29.99, image: './assets/laptop.jfif', rating: 4.8, description: 'Powerful gaming laptop with RTX 4060 graphics card. Perfect for gaming, streaming, and creative work.', specs: ['Intel i7-13th Gen', 'RTX 4060', '16GB RAM', '512GB SSD', '144Hz Display'] },
+      3: { id: 3, name: 'Wireless Airpods', price: 39.99, image: './assets/airdropes.jpg', rating: 4.6, description: 'Premium wireless earbuds with active noise cancellation and spatial audio. Enjoy crystal-clear sound anywhere.', specs: ['Active Noise Cancellation', '6-hour Battery', 'Wireless Charging Case', 'IPX4 Water Resistant', 'Spatial Audio'] },
+      4: { id: 4, name: '4K Camera', price: 49.99, image: './assets/camera.jpg', rating: 4.7, description: 'Professional 4K camera for content creators and photographers. Capture moments in breathtaking clarity.', specs: ['4K @ 60fps', '20MP Sensor', 'Image Stabilization', 'WiFi Enabled', 'Touchscreen LCD'] },
+      5: { id: 5, name: 'Bluetooth Speaker', price: 39.99, image: './assets/sound.jpg', rating: 4.4, description: 'Portable speaker with 360° surround sound and powerful bass. Take your music anywhere.', specs: ['360° Sound', '12-hour Battery', 'Waterproof (IPX7)', 'Bluetooth 5.0', 'Built-in Microphone'] },
+      6: { id: 6, name: 'Smartwatch Pro', price: 39.99, image: './assets/watch.jpg', rating: 4.5, description: 'Advanced smartwatch with comprehensive health tracking. Stay connected and monitor your wellness.', specs: ['Heart Rate Monitor', 'Sleep Tracking', '7-day Battery', 'Water Resistant', '50+ Watch Faces'] },
+      7: { id: 7, name: 'Tablet Max', price: 44.99, image: './assets/laptop.jfif', rating: 4.7, description: 'Large screen tablet perfect for multimedia, gaming, and productivity. Experience immersive content.', specs: ['10.5" Display', '128GB Storage', '8GB RAM', '8MP Camera', 'All-day Battery'] },
+      8: { id: 8, name: 'USB-C Hub', price: 24.99, image: './assets/phone.jpg', rating: 4.3, description: 'Multi-port USB-C hub for all your connectivity needs. Expand your device capabilities.', specs: ['7 USB Ports', 'Aluminum Design', 'Fast Data Transfer', 'Compact Form Factor', 'Universal Compatible'] },
+      9: { id: 9, name: 'Mechanical Keyboard', price: 34.99, image: './assets/watch.jpg', rating: 4.6, description: 'RGB mechanical gaming keyboard with tactile switches. Responsive and durable for gaming and typing.', specs: ['RGB Backlight', 'Mechanical Switches', '104 Keys', 'Programmable Keys', 'USB Wired'] },
+      10: { id: 10, name: 'Wireless Mouse', price: 19.99, image: './assets/camera.jpg', rating: 4.2, description: 'Wireless mouse with precision tracking and long battery life. Comfortable for extended use.', specs: ['2.4GHz Wireless', '3200 DPI', 'Long Battery Life', 'Ergonomic Design', '6 Programmable Buttons'] },
+      11: { id: 11, name: 'Webcam HD', price: 29.99, image: './assets/sound.jpg', rating: 4.5, description: '1080p HD webcam perfect for streaming and video calls. Crystal-clear video quality.', specs: ['1080p @ 30fps', 'Auto Focus', 'Wide Angle Lens', 'Built-in Microphone', 'USB Plug & Play'] },
+      12: { id: 12, name: 'Phone Stand', price: 14.99, image: './assets/phone.jpg', rating: 4.1, description: 'Universal phone stand for desk and table. Adjustable and stable support for all phone sizes.', specs: ['Adjustable Angle', 'Non-Slip Base', 'Aluminum Build', 'Fits All Sizes', 'Portable Design'] }
+    };
+
+    const reviewsDatabase = {
+      1: [
+        { author: 'John Doe', rating: 5, text: 'Excellent phone! Great camera quality and fast processor. Highly recommended!' },
+        { author: 'Jane Smith', rating: 4, text: 'Very good device, battery could last a bit longer though.' },
+        { author: 'Mike Johnson', rating: 5, text: 'Perfect device for my needs! Amazing display and performance.' }
+      ],
+      2: [
+        { author: 'Alex Turner', rating: 5, text: 'Amazing gaming performance! Runs all games on max settings.' },
+        { author: 'Sara Connor', rating: 5, text: 'Best laptop I have ever owned. Great value for money.' },
+        { author: 'Tom Hardy', rating: 4, text: 'Good performance but runs a bit hot under load.' }
+      ],
+      3: [
+        { author: 'Emma Watson', rating: 5, text: 'Sound quality is absolutely incredible. Noise cancellation works great.' },
+        { author: 'Chris Evans', rating: 4, text: 'Good noise cancellation and comfortable to wear for hours.' }
+      ],
+      4: [
+        { author: 'Diana Prince', rating: 5, text: 'Professional quality at a reasonable price. Highly satisfied!' }
+      ],
+      5: [
+        { author: 'Bruce Wayne', rating: 5, text: 'Powerful sound and great build quality. Worth every penny.' }
+      ],
+      6: [
+        { author: 'Peter Parker', rating: 4, text: 'Good smartwatch with useful features. Battery could be better.' }
+      ],
+      7: [
+        { author: 'Tony Stark', rating: 5, text: 'Amazing screen and performance. Perfect for all my needs.' }
+      ],
+      8: [
+        { author: 'Natasha Romp', rating: 4, text: 'Solid hub with good build quality. Does what it should.' }
+      ],
+      9: [
+        { author: 'Steve Roger', rating: 5, text: 'Mechanical switches feel great. RGB looks awesome.' }
+      ],
+      10: [
+        { author: 'Wanda Max', rating: 4, text: 'Good wireless range and accurate tracking. Very comfortable.' }
+      ],
+      11: [
+        { author: 'Vision Quest', rating: 5, text: 'Clear video quality and reliable performance.' }
+      ],
+      12: [
+        { author: 'Thor Odin', rating: 4, text: 'Sturdy and adjustable. Works well for all phones.' }
+      ]
+    };
+
+    const CART_STORAGE_KEY = 'amazon_cart_items';
+
+    function loadCart() {
+      const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+      if (!storedCart) {
+        return [];
+      }
+
+      try {
+        const parsedCart = JSON.parse(storedCart);
+        return Array.isArray(parsedCart) ? parsedCart : [];
+      } catch (error) {
+        console.warn('Invalid cart data. Resetting cart.');
+        return [];
+      }
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    function updateCartCount() {
+      const cartCountEl = document.getElementById('cartCount');
+      if (!cartCountEl) {
+        return;
+      }
+
+      const cart = loadCart();
+      const totalCount = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCountEl.textContent = totalCount;
+    }
+
+    function getProductIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return parseInt(params.get('id')) || 1;
+    }
+
+    function renderProduct() {
+      const productId = getProductIdFromURL();
+      const product = productDatabase[productId];
+      const reviews = reviewsDatabase[productId] || [];
+
+      if (!product) {
+        document.body.innerHTML = '<h1 style="text-align: center; margin-top: 50px;">Product not found</h1>';
+        return;
+      }
+
+      // Set product details
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('productImage').src = product.image;
+      document.getElementById('productImage').alt = product.name;
+      document.getElementById('productPrice').textContent = `₹${product.price}`;
+      document.getElementById('productDescription').textContent = product.description;
+      document.getElementById('productRating').textContent = `${product.rating}/5 Rating`;
+      
+      // Generate stars
+      const stars = '⭐'.repeat(Math.round(product.rating));
+      document.getElementById('productStars').textContent = stars;
+      document.getElementById('reviewCount').textContent = reviews.length;
+
+      // Render specifications
+      const specsList = document.getElementById('specsList');
+      specsList.innerHTML = product.specs.map(spec => 
+        `<li><i class="fas fa-check-circle"></i> ${spec}</li>`
+      ).join('');
+
+      // Render reviews
+      const reviewsList = document.getElementById('reviewsList');
+      if (reviews.length === 0) {
+        reviewsList.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to review this product!</p>';
+      } else {
+        reviewsList.innerHTML = reviews.map(review => `
+          <div class="review-item">
+            <div class="review-header">
+              <span class="review-author">${review.author}</span>
+              <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+            </div>
+            <p class="review-text">${review.text}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function addToCart() {
+      const productId = getProductIdFromURL();
+      const product = productDatabase[productId];
+      if (!product) {
+        return;
+      }
+
+      const cart = loadCart();
+      const existingItem = cart.find(cartItem => cartItem.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        });
+      }
+
+      saveCart(cart);
+      updateCartCount();
+
+      const button = document.querySelector('.btn-cart');
+      if (!button) {
+        alert(`${product.name} added to cart.`);
+        return;
+      }
+
+      const originalText = button.textContent;
+      button.textContent = 'Added to Cart';
+      button.style.backgroundColor = '#28a745';
+      button.disabled = true;
+
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = '';
+        button.disabled = false;
+      }, 2000);
+    }
+
+    function addToWishlist() {
+      const productId = getProductIdFromURL();
+      const product = productDatabase[productId];
+      if (!product) {
+        return;
+      }
+      alert(`${product.name} added to wishlist.`);
+    }
+
+    // Review Form Functionality
+    let selectedRating = 0;
+    let uploadedImages = [];
+
+    function initializeReviewForm() {
+      const stars = document.querySelectorAll('.star-rating .star');
+      const imageUpload = document.getElementById('imageUpload');
+      const imageInput = document.getElementById('imageInput');
+
+      // Star rating functionality
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          selectedRating = parseInt(star.dataset.rating);
+          updateStarDisplay(selectedRating);
+        });
+
+        star.addEventListener('mouseenter', () => {
+          const hoverRating = parseInt(star.dataset.rating);
+          updateStarDisplay(hoverRating);
+        });
+      });
+
+      document.getElementById('starRating').addEventListener('mouseleave', () => {
+        updateStarDisplay(selectedRating);
+      });
+
+      // Image upload functionality
+      imageUpload.addEventListener('click', () => {
+        imageInput.click();
+      });
+
+      imageUpload.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        imageUpload.classList.add('dragover');
+      });
+
+      imageUpload.addEventListener('dragleave', () => {
+        imageUpload.classList.remove('dragover');
+      });
+
+      imageUpload.addEventListener('drop', (e) => {
+        e.preventDefault();
+        imageUpload.classList.remove('dragover');
+        handleImageUpload(e.dataTransfer.files);
+      });
+
+      imageInput.addEventListener('change', (e) => {
+        handleImageUpload(e.target.files);
+      });
+    }
+
+    function updateStarDisplay(rating) {
+      const stars = document.querySelectorAll('.star-rating .star');
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+
+    function handleImageUpload(files) {
+      const maxImages = 5;
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      if (uploadedImages.length >= maxImages) {
+        alert('Maximum 5 images allowed');
+        return;
+      }
+
+      Array.from(files).forEach(file => {
+        if (uploadedImages.length >= maxImages) return;
+
+        if (!file.type.startsWith('image/')) {
+          alert('Only image files are allowed');
+          return;
+        }
+
+        if (file.size > maxSize) {
+          alert('Maximum file size is 5MB');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageData = {
+            name: file.name,
+            url: e.target.result,
+            size: file.size
+          };
+          uploadedImages.push(imageData);
+          renderImagePreview();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderImagePreview() {
+      const previewContainer = document.getElementById('imagePreview');
+      previewContainer.innerHTML = '';
+
+      uploadedImages.forEach((image, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'image-preview-item';
+        previewItem.innerHTML = `
+          <img src="${image.url}" alt="${image.name}">
+          <button type="button" class="remove-image" onclick="removeImage(${index})">×</button>
+        `;
+        previewContainer.appendChild(previewItem);
+      });
+    }
+
+    function removeImage(index) {
+      uploadedImages.splice(index, 1);
+      renderImagePreview();
+    }
+
+    function submitReview(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('reviewName').value.trim();
+      const text = document.getElementById('reviewText').value.trim();
+
+      if (!name || !text || selectedRating === 0) {
+        alert('Please fill in all required fields and select a rating');
+        return;
+      }
+
+      const productId = getProductIdFromURL();
+      const product = productDatabase[productId];
+
+      if (!product) {
+        alert('Product not found');
+        return;
+      }
+
+      // Create new review
+      const newReview = {
+        author: name,
+        rating: selectedRating,
+        text: text,
+        images: uploadedImages.map(img => img.url),
+        date: new Date().toISOString()
+      };
+
+      // Add to reviews database (in real app, this would be sent to server)
+      if (!reviewsDatabase[productId]) {
+        reviewsDatabase[productId] = [];
+      }
+      reviewsDatabase[productId].unshift(newReview);
+
+      // Clear form
+      document.getElementById('reviewForm').reset();
+      selectedRating = 0;
+      uploadedImages = [];
+      updateStarDisplay(0);
+      renderImagePreview();
+
+      // Re-render reviews
+      renderProduct();
+
+      // Show success message
+      const submitBtn = document.getElementById('submitReviewBtn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-check"></i> Review Submitted!';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }, 3000);
+
+      alert('Thank you! Your review has been submitted successfully.');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProduct();
+      updateCartCount();
+      initializeReviewForm();
+    });
+  </script>
+</body>
+</html>
+
